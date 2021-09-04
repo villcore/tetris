@@ -4,23 +4,23 @@ import com.villcore.game.tetris.model.Point;
 
 public enum TetrisPiece {
 
-    O(
-            new Point(2, 1),
-            new int[][]{
-                    new int[]{0, 0, 0, 0},
-                    new int[]{0, 1, 1, 0},
-                    new int[]{0, 1, 1, 0},
-                    new int[]{0, 0, 0, 0},
-            },
-            new int[][][]{
-                    new int[][]{
-                            new int[]{0, 0, 0, 0},
-                            new int[]{0, 1, 1, 0},
-                            new int[]{0, 1, 1, 0},
-                            new int[]{0, 0, 0, 0},
-                    }
-            }
-    ),
+//    O(
+//            new Point(2, 1),
+//            new int[][]{
+//                    new int[]{0, 0, 0, 0},
+//                    new int[]{0, 1, 1, 0},
+//                    new int[]{0, 1, 1, 0},
+//                    new int[]{0, 0, 0, 0},
+//            },
+//            new int[][][]{
+//                    new int[][]{
+//                            new int[]{0, 0, 0, 0},
+//                            new int[]{0, 1, 1, 0},
+//                            new int[]{0, 1, 1, 0},
+//                            new int[]{0, 0, 0, 0},
+//                    }
+//            }
+//    ),
 
     I(
             new Point(2, 1),

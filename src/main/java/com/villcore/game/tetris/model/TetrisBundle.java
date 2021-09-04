@@ -3,6 +3,8 @@ package com.villcore.game.tetris.model;
 import com.villcore.game.tetris.model.pieces.TetrisPiece;
 import lombok.Data;
 
+import java.awt.image.BufferedImage;
+
 @Data
 public class TetrisBundle {
 
@@ -15,6 +17,7 @@ public class TetrisBundle {
     private int mainY;
     private int mainWidth;
     private int mainHeight;
+    private BufferedImage mainBgImg;
 
     private int nextPieceX;
     private int nextPieceY;
@@ -32,6 +35,7 @@ public class TetrisBundle {
     private int colNums;
     private int[][] blockPoints;
     private Block<DefaultBlockData>[][] blocks;
+    private BufferedImage blockImg;
 
     // 右侧展示栏
     private int level;

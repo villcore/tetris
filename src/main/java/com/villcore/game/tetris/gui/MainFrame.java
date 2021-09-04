@@ -1,11 +1,11 @@
 package com.villcore.game.tetris.gui;
 
-import com.villcore.game.tetris.core.InputEventUtils;
 import com.villcore.game.tetris.core.Render;
 import com.villcore.game.tetris.core.TetrisController;
 import com.villcore.game.tetris.model.Block;
 import com.villcore.game.tetris.model.DefaultBlockData;
 import com.villcore.game.tetris.model.TetrisBundle;
+import com.villcore.game.tetris.util.ImageUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -21,7 +21,7 @@ public class MainFrame extends JFrame {
 
     public MainFrame(Dimension dimension) {
         this.setSize(dimension);
-        this.setTitle("Tetris@github.com/villcore");
+        this.setTitle("Tetris@github.com/villcore/tetris");
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -46,6 +46,9 @@ public class MainFrame extends JFrame {
         tetrisBundle.setMainY(5);
         tetrisBundle.setMainWidth(500);
         tetrisBundle.setMainHeight(910);
+        tetrisBundle.setMainBgImg(ImageUtil.getBufferedImage("themes/theme-1/main_bg.jpg"));
+        tetrisBundle.setBlockImg(ImageUtil.getBufferedImage("themes/theme-1/block_icon.png"));
+
         tetrisBundle.setNextPieceX(555);
         tetrisBundle.setNextPieceY(60);
         tetrisBundle.setNextPieceWidth(200);

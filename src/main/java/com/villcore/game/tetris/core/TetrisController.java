@@ -63,8 +63,8 @@ public class TetrisController {
                 break;
             }
             case KeyEvent.VK_DOWN: {
-                // down
                 log.info("Down");
+                tick();
                 break;
             }
 
@@ -145,7 +145,7 @@ public class TetrisController {
 
             tetrisBundle.setIsolatedPiece(null);
             tetrisBundle.setIsolatedBlocks(null);
-            tetrisBundle.setNextPieceBlockPoints(null);
+            // tetrisBundle.setNextPieceBlockPoints(null);
             tetrisBundle.setIsolatedPieceRotateCount(0);
             return;
         }
@@ -159,12 +159,12 @@ public class TetrisController {
     private void tryMakeNextPiece() {
         Block<DefaultBlockData>[] isolatedBlocks = tetrisBundle.getIsolatedBlocks();
         int[][] nextPieceBlockPoints = tetrisBundle.getNextPieceBlockPoints();
-        Block<DefaultBlockData>[] nextPieceBlocks = isolatedBlocks;
+        Block<DefaultBlockData>[] nextPieceBlocks = tetrisBundle.getNextPieceBlocks();
         TetrisPiece nextPiece = tetrisBundle.getNextPiece();
         if (isolatedBlocks == null || isolatedBlocks.length == 0) {
-            nextPieceBlocks = new Block[4 * 4];
             for (int loop = 0; loop < 3; loop++) {
                 if (nextPieceBlockPoints == null || nextPieceBlockPoints.length == 0) {
+                    nextPieceBlocks = new Block[4 * 4];
                     nextPiece = makeNextPiece();
                     tetrisBundle.setNextPiece(nextPiece);
                     int[][] pieceBlockPoints = rotatePiece(nextPiece);
@@ -172,7 +172,7 @@ public class TetrisController {
                     Color color = makeColor();
                     for (int i = 0; i < pieceBlockPoints.length; i++) {
                         for (int j = 0; j < pieceBlockPoints[i].length; j++) {
-                            Block<DefaultBlockData> block = new Block<DefaultBlockData>();
+                            Block<DefaultBlockData> block = new Block<>();
                             block.setX(j);
                             block.setY(i);
                             block.setEmpty(pieceBlockPoints[i][j] == 0);
@@ -185,6 +185,10 @@ public class TetrisController {
                     tetrisBundle.setNextPieceBlocks(nextPieceBlocks);
                     nextPieceBlockPoints = pieceBlockPoints;
                 } else {
+                    if (tetrisBundle.getIsolatedBlocks() != null && tetrisBundle.getIsolatedBlocks().length > 0) {
+                        continue;
+                    }
+
                     Block<DefaultBlockData>[] newIsolatedBlocks = new Block[4 * 4];
                     for (int i = 0; i < nextPieceBlockPoints.length; i++) {
                         for (int j = 0; j < nextPieceBlockPoints[i].length; j++) {
@@ -230,22 +234,51 @@ public class TetrisController {
     }
 
     private void tryRemoveLine() {
-        int[][] blockPoints = tetrisBundle.getBlockPoints();
-        Block<DefaultBlockData>[][] blocks = tetrisBundle.getBlocks();
 
         // 从低向上
-        for (int i = 0; i < blocks[0].length; i++) {
+        int[][] blockPoints = tetrisBundle.getBlockPoints();
+        Block<DefaultBlockData>[][] blocks = tetrisBundle.getBlocks();
+        for (int i = blocks[0].length - 1; i >= 0; i--) {
             boolean removeLine = true;
-            for (int j = 0; j < blocks.length; j++) {
-                if (blockPoints[i][j] == 0) {
+            for (int j = blocks.length - 1; j >= 0; j--) {
+                if (blockPoints[j][i] == 0) {
                     removeLine = false;
+                }
+            }
+
+            if (removeLine) {
+                // remove last line
+                for (int j = blocks.length - 1; j >= 0; j--) {
+                    blockPoints[j][i] = 0;
+                    blocks[j][i].setEmpty(true);
+                    blocks[j][i].setDefaultBlockData(null);
+                }
+
+                // move down all blocks
+                blocks = tetrisBundle.getBlocks();
+
+                for (int m = i - 1; m >= 0; m--) {
+                    for (int j = blocks.length - 1; j >= 0; j--) {
+                        Block<DefaultBlockData> block = blocks[j][m];
+                        int x = block.getX();
+                        int y = block.getY();
+                        block.setY(y + 1);
+                        Block<DefaultBlockData> newBlock = new Block<>();
+                        newBlock.setX(x);
+                        newBlock.setY(y);
+                        newBlock.setEmpty(true);
+                        blocks[j][m] = newBlock;
+                        blocks[j][m + 1] = block;
+                        blockPoints[j][m + 1] = blockPoints[j][m];
+                        blockPoints[j][m] = 0;
+                    }
                 }
             }
         }
     }
 
     public void start() {
-        this.controllerScheduler.scheduleWithFixedDelay(this::run, 200L, 200L, TimeUnit.MILLISECONDS);
+        this.controllerScheduler.scheduleWithFixedDelay(this::run, 500L, 500L, TimeUnit.MILLISECONDS);
     }
 
     public void stop() {
