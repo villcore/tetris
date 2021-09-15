@@ -45,10 +45,12 @@ public class Render {
         graphics.draw3DRect(tetrisBundle.getMainX(), tetrisBundle.getMainY(), tetrisBundle.getMainWidth(), tetrisBundle.getMainHeight(), true);
         graphics.draw3DRect(tetrisBundle.getNextPieceX(), tetrisBundle.getNextPieceY(), tetrisBundle.getNextPieceWidth(), tetrisBundle.getNextPieceHeight(), true);
 
+        /*
         BufferedImage img = tetrisBundle.getMainBgImg();
         if (img != null) {
             graphics.drawImage(img, tetrisBundle.getMainX(), tetrisBundle.getMainY(), tetrisBundle.getMainWidth(), tetrisBundle.getMainHeight(), null);
         }
+        */
 
         int blockSize = tetrisBundle.getBlockSize();
         for (int i = 0; i <= tetrisBundle.getMainWidth() / blockSize; i++) {
@@ -105,6 +107,7 @@ public class Render {
                                 tetrisBundle.getMainY() + block.getY() * tetrisBundle.getBlockSize(),
                                 blockSize, blockSize, 10, 10);
 
+                        /*
                         BufferedImage blockIconImg = tetrisBundle.getBlockImg();
                         if (blockIconImg != null) {
                             graphics.drawImage(blockIconImg,
@@ -112,6 +115,7 @@ public class Render {
                                     tetrisBundle.getMainY() + block.getY() * tetrisBundle.getBlockSize(),
                                     blockSize, blockSize, null);
                         }
+                        */
                     }
                 }
             }
